@@ -7,11 +7,11 @@ export const JournalNavigation = () => {
         <Routes>
             {
                 routes.map(({ path, Component }) => (
-                    path
-                        ? ( <Route path={ path } element={ <Component /> } /> )
-                        : ( <Route path="/*" element={ <Navigate to="/JournalPage" replace /> } /> )
+                    <Route path={ path } element={ <Component /> } />
                 ))
             }
+            {/* Redireccion */}
+            <Route path="/*" element={ <Navigate to="/JournalPage" replace /> } />
         </Routes>
     )
 }

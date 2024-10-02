@@ -14,12 +14,6 @@ export const AuthRoutes: Route[] = ([
     {
         Component: LoginPage,
         name: 'LoginPage',
-        path: '/*',
-        to: '/LoginPage',
-    },
-    {
-        Component: LoginPage,
-        name: 'LoginPage',
         path: 'LoginPage',
         to: '/LoginPage',
     },

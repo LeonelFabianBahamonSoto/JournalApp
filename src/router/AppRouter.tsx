@@ -2,17 +2,22 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthNavigation } from '../auth/routes/AuthNavigation';
 import { JournalNavigation } from '../journal/routes/JournalNavigation';
+import { Suspense } from 'react';
 
 export const AppRouter = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* Login */}
-                <Route path='/auth/*' element={ <AuthNavigation /> } />
+        <Suspense
+            fallback={ <span> LOADING ... </span> }
+        >
+            <BrowserRouter>
+                <Routes>
+                    {/* Login */}
+                    <Route path='/auth/*' element={ <AuthNavigation /> } />
 
-                {/* JournalApp */}
-                <Route path='/*' element={ <JournalNavigation /> } />
-            </Routes>
-        </BrowserRouter>
+                    {/* Journal */}
+                    <Route path='/*' element={ <JournalNavigation /> } />
+                </Routes>
+            </BrowserRouter>
+        </Suspense>
     )
 }

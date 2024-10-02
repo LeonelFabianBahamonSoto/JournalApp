@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './styles.css';
 import reportWebVitals from './reportWebVitals';
 
-import { AppRouter } from './router/AppRouter';
+import { JournalApp } from './JournalApp';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AppRouter />
+    <JournalApp />
   </React.StrictMode>
 );
 
