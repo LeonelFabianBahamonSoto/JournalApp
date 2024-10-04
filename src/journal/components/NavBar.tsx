@@ -1,36 +1,57 @@
-import { Menu } from "@mui/icons-material";
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { AccountCircle, Menu } from "@mui/icons-material";
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { JournalApp } from '../../JournalApp';
 
 interface Props {
     drawerWidth: number,
+    handleDrawerOpen: () => void;
+    isOpen: boolean;
 };
 
-export const NavBar = ( { drawerWidth = 240 }: Props ) => {
+const NavBar = ( { drawerWidth = 240, handleDrawerOpen, isOpen = false }: Props ) => {
     return (
         <div>
             <AppBar
                 position="fixed"
                 sx={{
                     ml: { sm: `${ drawerWidth }` },
-                    width: { sm: `calc(100% - ${ drawerWidth }px)` },
+                    width: { sm: isOpen ? `calc(100% - ${ drawerWidth }px)` : '95%' },
                 }}
             >
                 <Toolbar>
                     <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
                         aria-label="menu"
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+                        color="inherit"
+                        edge="start"
+                        onClick={ handleDrawerOpen }
+                        size="large"
+                        sx={{
+                            mr: 2,
+                        }}
+                        // sx={{ mr: 2, display: { sm: 'none' } }}
                     >
                         <Menu />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        News
+                        JournalApp
                     </Typography>
-                    <Button color="inherit">Login</Button>
+
+                    <Box sx={{ display: { xs: 'flex' } }}>
+                        <IconButton
+                        size="large"
+                        aria-label="show more"
+                        // aria-controls={mobileMenuId}
+                        aria-haspopup="true"
+                        // onClick={handleMobileMenuOpen}
+                        color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
         </div>
     )
 }
+
+export default NavBar;

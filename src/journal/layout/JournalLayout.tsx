@@ -1,5 +1,9 @@
-import { Box } from "@mui/material";
-import { NavBar } from "../components/NavBar";
+import { useState } from "react";
+
+import NavBar from "../components/NavBar";
+import SideBar from "../components/SideBar";
+
+import { Box, CssBaseline } from "@mui/material";
 
 interface Props {
     children: React.ReactNode,
@@ -8,13 +12,33 @@ interface Props {
 const drawerWidth = 240;
 
 export const JournalLayout = ({ children }: Props) => {
+
+    const [ open, setOpen ] = useState( false );
+
+    const handleDrawerOpen = () => {
+        setOpen( true );
+    };
+
+    const handleDrawerClose = () => {
+        setOpen( false );
+    };
+
     return (
         <Box>
-            <NavBar drawerWidth={ drawerWidth } />
+            <CssBaseline />
+            <NavBar
+                drawerWidth={ drawerWidth }
+                handleDrawerOpen={ handleDrawerOpen }
+                isOpen={ open }
+            />
 
-            {/* SideBar */}
+            <SideBar
+                drawerWidth={ drawerWidth }
+                handleDrawerClose={ handleDrawerClose }
+                isOpen={ open }
+            />
 
-            <h1>JournalLayout</h1>
+            {/* <h1>JournalLayout</h1> */}
 
             <Box
                 component='main'
