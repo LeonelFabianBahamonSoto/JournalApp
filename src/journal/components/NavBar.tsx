@@ -1,5 +1,6 @@
 import { AccountCircle, Menu } from "@mui/icons-material";
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { AppBar, Box, Button, CssBaseline, IconButton, styled, Toolbar, Typography } from "@mui/material";
 import { JournalApp } from '../../JournalApp';
 
 interface Props {
@@ -8,49 +9,60 @@ interface Props {
     isOpen: boolean;
 };
 
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
 const NavBar = ( { drawerWidth = 240, handleDrawerOpen, isOpen = false }: Props ) => {
+
+    const AppBar = styled(MuiAppBar, {
+        shouldForwardProp: (prop) => prop !== 'open',
+    })<AppBarProps>(({ theme }) => ({
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        variants: [
+            {
+                props: ({ open }) => open,
+                style: {
+                    marginLeft: drawerWidth,
+                    width: `calc(100% - ${drawerWidth}px)`,
+                    transition: theme.transitions.create(['width', 'margin'], {
+                        easing: theme.transitions.easing.sharp,
+                        duration: theme.transitions.duration.enteringScreen,
+                    }),
+                },
+            },
+        ],
+    }));
+
     return (
-        <div>
-            <AppBar
-                position="fixed"
-                sx={{
-                    ml: { sm: `${ drawerWidth }` },
-                    width: { sm: isOpen ? `calc(100% - ${ drawerWidth }px)` : '95%' },
-                }}
-            >
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={ isOpen }>
                 <Toolbar>
                     <IconButton
-                        aria-label="menu"
-                        color="inherit"
-                        edge="start"
-                        onClick={ handleDrawerOpen }
-                        size="large"
-                        sx={{
-                            mr: 2,
-                        }}
-                        // sx={{ mr: 2, display: { sm: 'none' } }}
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={handleDrawerOpen}
+                    edge="start"
+                    sx={[
+                        {
+                        marginRight: 5,
+                        },
+                        isOpen && { display: 'none' },
+                    ]}
                     >
-                        <Menu />
+                    <Menu />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        JournalApp
+                    <Typography variant="h6" noWrap component="div">
+                    Mini variant drawer
                     </Typography>
-
-                    <Box sx={{ display: { xs: 'flex' } }}>
-                        <IconButton
-                        size="large"
-                        aria-label="show more"
-                        // aria-controls={mobileMenuId}
-                        aria-haspopup="true"
-                        // onClick={handleMobileMenuOpen}
-                        color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                    </Box>
                 </Toolbar>
             </AppBar>
-        </div>
+        </Box>
     )
 }
 
