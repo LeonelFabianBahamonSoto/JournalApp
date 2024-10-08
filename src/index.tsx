@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './styles.css';
 import reportWebVitals from './reportWebVitals';
 
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+
 import { JournalApp } from './JournalApp';
 
 const root = ReactDOM.createRoot(
@@ -10,7 +13,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <JournalApp />
+    <Provider store={ store }>
+      <JournalApp />
+    </Provider>
   </React.StrictMode>
 );
 

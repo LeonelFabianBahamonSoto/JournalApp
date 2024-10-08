@@ -1,6 +1,5 @@
 import { AccountCircle, Menu } from "@mui/icons-material";
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import { JournalApp } from '../../JournalApp';
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 
 interface Props {
     drawerWidth: number,

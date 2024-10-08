@@ -7,7 +7,7 @@ export const AuthNavigation = () => {
         <Routes>
             {
                 AuthRoutes.map(({ path, Component }) => (
-                    <Route path={ path } element={ <Component /> } />
+                    <Route key={ path } path={ path } element={ <Component /> } />
                 ))
             }
             {/* Redireccion */}

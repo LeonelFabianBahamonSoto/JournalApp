@@ -1,14 +1,48 @@
 import { AuthForm } from '../components/AuthForm';
 
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+import { checkingAuthentication, startGoogleSignIn } from '../../store/auth/authThunk';
+
+import { signInWithGoogle } from '../../firebase/providers';
+
 import { Form, Formik } from 'formik';
 import { Link as RouterLink } from "react-router-dom";
 import * as Yup from 'yup';
 
 import { AuthLayout } from '../layout/AuthLayout';
-import { Box, Button, Grid2, Link } from '@mui/material';
+import { Alert, Box, Button, Grid2, Link } from '@mui/material';
 import { Google } from '@mui/icons-material';
+import { useState } from 'react';
+import { login, logout } from '../../store/auth/authSlice';
 
 const LoginPage = () => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const [ isAlert, setIsAlert ] = useState( false );
+
+    const onGoogleSignIn = async() => {
+        dispatch( startGoogleSignIn() );
+        const response = await signInWithGoogle();
+
+        if( response.isAuth ){
+            dispatch( login( response ) )
+        }
+        else{
+            dispatch( logout( response.errorMessage ) );
+            setIsAlert( true );
+            setTimeout(() => { setIsAlert( false ) }, 2500);
+        };
+    };
+
+    const AlertViews = () => {
+        return (
+            <Alert variant="outlined" severity="error">
+                No fue posible iniciar sesión
+            </Alert>
+        )
+    };
+
     return (
         <AuthLayout title='Login'>
             <Formik
@@ -17,7 +51,7 @@ const LoginPage = () => {
                     password: '',
                 }}
                 onSubmit={( values ) => {
-                    console.info( 'VALUES: ', values );
+                    dispatch( checkingAuthentication() );
                 }}
                 validationSchema={
                     Yup.object({
@@ -71,6 +105,7 @@ const LoginPage = () => {
                             size={{ xs: 12, sm: 12, md: 6, lg: 6, }}
                         >
                             <Button
+                                onClick={ onGoogleSignIn }
                                 variant='contained'
                                 sx={{
                                     fontSize: '12px',
@@ -107,6 +142,10 @@ const LoginPage = () => {
 
                 </Form>
             </Formik>
+
+            {
+                ( isAlert ) && <AlertViews />
+            }
         </AuthLayout>
     )
 }

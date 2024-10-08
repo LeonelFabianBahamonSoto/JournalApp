@@ -7,7 +7,7 @@ interface Route {
     name: string,
 };
 
-const JournalPage = lazy(() => import(/* webpackChunkName: JournalPage */'../pages/JournalPage'));
+const JournalPage = lazy(() => import(/* webpackChunkName: "JournalPage" */'../pages/JournalPage'));
 
 export const routes: Route[] = ([
     {
