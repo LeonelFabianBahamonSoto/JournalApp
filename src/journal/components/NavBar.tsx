@@ -1,8 +1,6 @@
-import { AccountCircle, Menu } from "@mui/icons-material";
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import { Menu } from "@mui/icons-material";
+import { Box, CssBaseline, IconButton, styled, Toolbar, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { JournalApp } from '../../JournalApp';
-
 interface Props {
     drawerWidth: number,
     handleDrawerOpen: () => void;
