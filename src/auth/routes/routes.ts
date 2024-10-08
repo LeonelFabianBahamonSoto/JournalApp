@@ -7,8 +7,8 @@ interface Route {
     name?: string,
 };
 
-const LoginPage = lazy(() => import(/* webpackChunkName: LoginPage */'../pages/LoginPage'));
-const RegisterPage = lazy(() => import(/* webpackChunkName: RegisterPage */'../pages/RegisterPage'));
+const LoginPage = lazy(() => import(/* webpackChunkName: "LoginPage" */'../pages/LoginPage'));
+const RegisterPage = lazy(() => import(/* webpackChunkName: "RegisterPage" */'../pages/RegisterPage'));
 
 export const AuthRoutes: Route[] = ([
     {

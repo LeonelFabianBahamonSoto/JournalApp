@@ -1,6 +1,6 @@
 import { AccountCircle, Menu } from "@mui/icons-material";
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { AppBar, Box, Button, CssBaseline, IconButton, styled, Toolbar, Typography } from "@mui/material";
 import { JournalApp } from '../../JournalApp';
 
 interface Props {

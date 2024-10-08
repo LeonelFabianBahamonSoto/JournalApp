@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { AuthLayout } from '../layout/AuthLayout';
 import { Box, Button, Grid2, Link } from '@mui/material';
-import { Google } from '@mui/icons-material';
+// import { Google } from '@mui/icons-material';
 
 const RegisterPage = () => {
     return (
