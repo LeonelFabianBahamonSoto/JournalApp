@@ -1,7 +1,7 @@
 import { AuthForm } from '../components/AuthForm';
 
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
 import { checkingAuthentication, startGoogleSignIn } from '../../store/auth/authThunk';
 
 import { signInWithGoogle } from '../../firebase/providers';
@@ -13,13 +13,15 @@ import * as Yup from 'yup';
 import { AuthLayout } from '../layout/AuthLayout';
 import { Alert, Box, Button, Grid2, Link } from '@mui/material';
 import { Google } from '@mui/icons-material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { login, logout } from '../../store/auth/authSlice';
 
 const LoginPage = () => {
+    const auth = useSelector( ( state: RootState ) => state.auth );
     const dispatch = useDispatch<AppDispatch>();
 
     const [ isAlert, setIsAlert ] = useState( false );
+    const isAuthenticated = useMemo(() => auth.status === 'authenticated', [ auth.status ]);
 
     const onGoogleSignIn = async() => {
         dispatch( startGoogleSignIn() );
@@ -91,6 +93,7 @@ const LoginPage = () => {
                             size={{ xs: 12, sm: 12, md: 6, lg: 6, }}
                         >
                             <Button
+                                disabled={ isAuthenticated }
                                 type="submit"
                                 variant='contained'
                                 sx={{
@@ -105,6 +108,7 @@ const LoginPage = () => {
                             size={{ xs: 12, sm: 12, md: 6, lg: 6, }}
                         >
                             <Button
+                                disabled={ isAuthenticated }
                                 onClick={ onGoogleSignIn }
                                 variant='contained'
                                 sx={{
