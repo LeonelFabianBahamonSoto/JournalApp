@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
     Box,
     styled,
-    useTheme,
 } from "@mui/material";
 
 import NavBar from "../components/NavBar";
@@ -16,8 +15,6 @@ interface Props {
 const drawerWidth = 240;
 
 export const JournalLayout = ({ children }: Props) => {
-
-    const theme = useTheme();
 
     const [ open, setOpen ] = useState( false );
 

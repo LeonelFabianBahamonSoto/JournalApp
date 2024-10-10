@@ -1,8 +1,11 @@
+import { useMemo, useState } from 'react';
+
 import { AuthForm } from '../components/AuthForm';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { checkingAuthentication, startGoogleSignIn } from '../../store/auth/authThunk';
+import { checkingAuthentication, startGoogleSignIn, startSignIn } from '../../store/auth/authThunk';
+import { login, logout } from '../../store/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { signInWithGoogle } from '../../firebase/providers';
 
@@ -11,16 +14,20 @@ import { Link as RouterLink } from "react-router-dom";
 import * as Yup from 'yup';
 
 import { AuthLayout } from '../layout/AuthLayout';
-import { Alert, Box, Button, Grid2, Link } from '@mui/material';
+
 import { Google } from '@mui/icons-material';
-import { useMemo, useState } from 'react';
-import { login, logout } from '../../store/auth/authSlice';
+import { Alert, Box, Button, Grid2, Link } from '@mui/material';
+
+interface AlertViewsProps {
+    message: string;
+}
 
 const LoginPage = () => {
     const auth = useSelector( ( state: RootState ) => state.auth );
     const dispatch = useDispatch<AppDispatch>();
 
     const [ isAlert, setIsAlert ] = useState( false );
+    const [ isErrorMessage, setErrorMessage ] = useState( '' );
     const isAuthenticated = useMemo(() => auth.status === 'authenticated', [ auth.status ]);
 
     const onGoogleSignIn = async() => {
@@ -28,19 +35,20 @@ const LoginPage = () => {
         const response = await signInWithGoogle();
 
         if( response.isAuth ){
-            dispatch( login( response ) )
+            dispatch( login( response ) );
         }
         else{
             dispatch( logout( response.errorMessage ) );
+            setErrorMessage( 'No fue posible iniciar sesión' );
             setIsAlert( true );
             setTimeout(() => { setIsAlert( false ) }, 2500);
         };
     };
 
-    const AlertViews = () => {
+    const AlertViews = ( { message }: AlertViewsProps ) => {
         return (
-            <Alert variant="outlined" severity="error">
-                No fue posible iniciar sesión
+            <Alert severity="error">
+                { message }
             </Alert>
         )
     };
@@ -52,8 +60,20 @@ const LoginPage = () => {
                     email: '',
                     password: '',
                 }}
-                onSubmit={( values ) => {
+                onSubmit={ async( values ) => {
                     dispatch( checkingAuthentication() );
+                    const { isAuth, errorMessage } = await dispatch( startSignIn( values ) );
+
+                    console.info(" --------> iSAUTH: ", isAuth);
+                    if( isAuth ){
+                        console.info(" --------> Redireccion");
+                    }
+                    else {
+                        dispatch( logout( errorMessage ) );
+                        setErrorMessage( errorMessage );
+                        setIsAlert( true );
+                        setTimeout(() => { setIsAlert( false ) }, 2500);
+                    }
                 }}
                 validationSchema={
                     Yup.object({
@@ -148,7 +168,7 @@ const LoginPage = () => {
             </Formik>
 
             {
-                ( isAlert ) && <AlertViews />
+                ( isAlert ) && <AlertViews message={ isErrorMessage } />
             }
         </AuthLayout>
     )

@@ -1,14 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface Auth {
-    displayName: string,
-    email: string,
-    errorMessage: string,
-    photoUrl: string,
-    status: string,
-    uid: string,
-};
-
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
