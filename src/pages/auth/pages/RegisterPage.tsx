@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
 
-import { AuthForm } from '../components/AuthForm';
+import { AuthForm } from '../../../components/atoms/Forms/AuthForm';
 import { AuthLayout } from '../layout/AuthLayout';
-import { startCreateNewUser } from '../../store/auth/authThunk';
+import { startCreateNewUser } from '../../../store/auth/authThunk';
 
 import { Form, Formik } from 'formik';
 import { Link as RouterLink } from "react-router-dom";

@@ -1,13 +1,16 @@
+import { Suspense } from 'react';
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { AuthNavigation } from '../auth/routes/AuthNavigation';
+import Loading from '../components/templates/Loading';
+
+import { AuthNavigation } from '../pages/auth/routes/AuthNavigation';
 import { JournalNavigation } from '../journal/routes/JournalNavigation';
-import { Suspense } from 'react';
 
 export const AppRouter = () => {
     return (
         <Suspense
-            fallback={ <span> LOADING ... </span> }
+            fallback={ <Loading /> }
         >
             <BrowserRouter>
                 <Routes>

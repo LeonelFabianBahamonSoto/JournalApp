@@ -1,30 +1,53 @@
 import { useMemo, useState } from 'react';
 
-import { AuthForm } from '../components/AuthForm';
+import { AuthForm } from '../../../components/atoms/Forms/AuthForm';
 
-import { AppDispatch, RootState } from '../../store/store';
-import { checkingAuthentication, startGoogleSignIn, startSignIn } from '../../store/auth/authThunk';
-import { login, logout } from '../../store/auth/authSlice';
+import { AppDispatch, RootState } from '../../../store/store';
+import { checkingAuthentication, startGoogleSignIn, startSignIn } from '../../../store/auth/authThunk';
+import { login, logout } from '../../../store/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { signInWithGoogle } from '../../firebase/providers';
+import { signInWithGoogle } from '../../../firebase/providers';
 
 import { Form, Formik } from 'formik';
 import { Link as RouterLink } from "react-router-dom";
 import * as Yup from 'yup';
 
 import { AuthLayout } from '../layout/AuthLayout';
+import GridFormButtons from '../../../components/molecules/GridFormButtons';
 
+import { Alert, Box, Button, Link, Theme } from '@mui/material';
 import { Google } from '@mui/icons-material';
-import { Alert, Box, Button, Grid2, Link } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
+export const useStyles = makeStyles(( theme: Theme ) => ({
+        buttonStyle: {
+            fontSize: '12px',
+            width: '100%',
+        },
+        linkContainer: {
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'end',
+            mt: 2,
+            padding: 1,
+        },
+        linkStyle: {
+            fontSize: '18px',
+            fontWeight: '600',
+            textDecoration: 'underline',
+        },
+}));
 
 interface AlertViewsProps {
     message: string;
-}
+};
 
 const LoginPage = () => {
     const auth = useSelector( ( state: RootState ) => state.auth );
     const dispatch = useDispatch<AppDispatch>();
+
+    const classes = useStyles();
 
     const [ isAlert, setIsAlert ] = useState( false );
     const [ isErrorMessage, setErrorMessage ] = useState( '' );
@@ -64,7 +87,6 @@ const LoginPage = () => {
                     dispatch( checkingAuthentication() );
                     const { isAuth, errorMessage } = await dispatch( startSignIn( values ) );
 
-                    console.info(" --------> iSAUTH: ", isAuth);
                     if( isAuth ){
                         console.info(" --------> Redireccion");
                     }
@@ -102,63 +124,46 @@ const LoginPage = () => {
                         type= 'password'
                     />
 
-                    <Grid2
-                        alignItems='center'
-                        container
-                        justifyContent='center'
-                        spacing={ 2 }
-                        sx={{ mt: 2 }}
-                    >
-                        <Grid2
-                            size={{ xs: 12, sm: 12, md: 6, lg: 6, }}
-                        >
-                            <Button
-                                disabled={ isAuthenticated }
-                                type="submit"
-                                variant='contained'
-                                sx={{
-                                    fontSize: '12px',
-                                    width: '100%'
-                                }}
-                            >
-                                Login
-                            </Button>
-                        </Grid2>
-                        <Grid2
-                            size={{ xs: 12, sm: 12, md: 6, lg: 6, }}
-                        >
-                            <Button
-                                disabled={ isAuthenticated }
-                                onClick={ onGoogleSignIn }
-                                variant='contained'
-                                sx={{
-                                    fontSize: '12px',
-                                    width: '100%'
-                                }}
-                            >
-                                <Google sx={{ mr: 1 }} />
-                                Google
-                            </Button>
-                        </Grid2>
-                    </Grid2>
-
-                    <Box
-                        sx={{
-                            alignItems: 'center',
+                    <GridFormButtons
+                        alignItemsData="center"
+                        spacingData={ 2 }
+                        style={{
                             display: 'flex',
-                            justifyContent: 'end',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
                             mt: 2,
-                            padding: 1,
                         }}
+                        sizeGrid={{ xs: 12, sm: 6, md: 4, lg: 3 }}
                     >
+                        <Button
+                            disabled={ isAuthenticated }
+                            type="submit"
+                            variant='contained'
+                            className={ classes.buttonStyle }
+                            sx={{
+
+                            }}
+                        >
+                            Login
+                        </Button>
+
+                        <Button
+                            disabled={ isAuthenticated }
+                            onClick={ onGoogleSignIn }
+                            variant='contained'
+                            className={ classes.buttonStyle }
+                        >
+                            <Google sx={{ mr: 1 }} />
+                            Google
+                        </Button>
+                    </GridFormButtons>
+
+
+                    <Box className={ classes.linkContainer } >
                         <Link
                             component={ RouterLink }
                             to='/auth/RegisterPage'
-                            sx={{
-                                fontSize: '18px',
-                                fontWeight: '600',
-                                textDecoration: 'underline',
-                            }}
+                            className={ classes.linkStyle }
                         >
                             Registro
                         </Link>
