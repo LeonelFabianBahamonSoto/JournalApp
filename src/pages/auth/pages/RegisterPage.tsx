@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 
 import { AuthForm } from '../../../components/atoms/Forms/AuthForm';
-import { AuthLayout } from '../layout/AuthLayout';
 import { startCreateNewUser } from '../../../store/auth/authThunk';
 
 import { Form, Formik } from 'formik';
@@ -14,6 +13,7 @@ import * as Yup from 'yup';
 import { Box, Button, Grid2, Link } from '@mui/material';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content';
+import FormContainer from '../../../components/molecules/FormContainer';
 
 interface RegisterData {
     displayName: string,
@@ -30,7 +30,30 @@ const RegisterPage = () => {
     const isCheckingAuthentication = useMemo( () => status === 'checking', [ status ] );
 
     return (
-        <AuthLayout title='Register'>
+        <FormContainer
+            alignItemsMain='center'
+            sizeForm={{ xs: 4, md: 6, lg: 8 }}
+            spacingMain={ 0 }
+            title='Login'
+            titleStyle={{
+                fontSize: '25px',
+                marginBottom: '2%',
+                fontWeight: '600',
+            }}
+            styleMain={{
+                alignItems: 'center',
+                display: 'flex',
+                backgroundColor: 'primary.main',
+                justifyContent: 'center',
+                minHeight: '100vh',
+            }}
+            styleSecond={{
+                backgroundColor: 'white',
+                borderRadius: 2,
+                padding: 3,
+                width: '80%',
+            }}
+        >
             <Formik
                 initialValues={{
                     email: '',
@@ -149,7 +172,7 @@ const RegisterPage = () => {
 
                 </Form>
             </Formik>
-        </AuthLayout>
+        </FormContainer>
     )
 }
 

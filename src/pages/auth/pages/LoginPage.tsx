@@ -13,15 +13,16 @@ import { Form, Formik } from 'formik';
 import { Link as RouterLink } from "react-router-dom";
 import * as Yup from 'yup';
 
-import { AuthLayout } from '../layout/AuthLayout';
 import GridFormButtons from '../../../components/molecules/GridFormButtons';
 
 import { Alert, Box, Button, Link, Theme } from '@mui/material';
 import { Google } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+import FormContainer from '../../../components/molecules/FormContainer';
 
 export const useStyles = makeStyles(( theme: Theme ) => ({
         buttonStyle: {
+            height: '3vh',
             fontSize: '12px',
             width: '100%',
         },
@@ -77,7 +78,30 @@ const LoginPage = () => {
     };
 
     return (
-        <AuthLayout title='Login'>
+        <FormContainer
+            alignItemsMain='center'
+            sizeForm={{ xs: 4, md: 6, lg: 8 }}
+            spacingMain={ 0 }
+            title='Login'
+            titleStyle={{
+                fontSize: '25px',
+                marginBottom: '2%',
+                fontWeight: '600',
+            }}
+            styleMain={{
+                alignItems: 'center',
+                display: 'flex',
+                backgroundColor: 'primary.main',
+                justifyContent: 'center',
+                minHeight: '100vh',
+            }}
+            styleSecond={{
+                backgroundColor: 'white',
+                borderRadius: 2,
+                padding: 3,
+                width: '80%',
+            }}
+        >
             <Formik
                 initialValues={{
                     email: '',
@@ -136,24 +160,31 @@ const LoginPage = () => {
                         sizeGrid={{ xs: 12, sm: 6, md: 4, lg: 3 }}
                     >
                         <Button
+                            className={ classes.buttonStyle }
                             disabled={ isAuthenticated }
                             type="submit"
                             variant='contained'
-                            className={ classes.buttonStyle }
                             sx={{
-
+                                bgcolor: '#4285f4',
+                                color: 'white',
+                                fontWeight: '600',
                             }}
                         >
                             Login
                         </Button>
 
                         <Button
+                            className={ classes.buttonStyle }
                             disabled={ isAuthenticated }
                             onClick={ onGoogleSignIn }
                             variant='contained'
-                            className={ classes.buttonStyle }
+                            sx={{
+                                bgcolor: '#fbbc05',
+                                color: '#ea4335',
+                                fontWeight: '600',
+                            }}
                         >
-                            <Google sx={{ mr: 1 }} />
+                            <Google sx={{ color: '#ea4335', mr: 1 }} />
                             Google
                         </Button>
                     </GridFormButtons>
@@ -175,7 +206,7 @@ const LoginPage = () => {
             {
                 ( isAlert ) && <AlertViews message={ isErrorMessage } />
             }
-        </AuthLayout>
+        </FormContainer>
     )
 }
 

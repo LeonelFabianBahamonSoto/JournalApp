@@ -2,46 +2,54 @@ import { ReactNode } from "react";
 import { Grid2, Typography } from "@mui/material";
 
 interface FormContainerData {
+    alignItemsMain?: string,
+    children: ReactNode | ReactNode[];
     customClassName?: string;
-    sizeForm?: number;
-    style?: React.CSSProperties;
+    sizeForm?: { xs?: number, md?: number, lg?: number }
+    spacingMain?: number,
+    styleMain?: React.CSSProperties;
+    styleSecond?: React.CSSProperties;
     title?: string;
-    titleVariant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
     titleStyle?: React.CSSProperties;
 };
 
-type FormContainerProps<T> = {
-    data: T & FormContainerData;
-    render: ReactNode;
-};
-
-const FormContainer = <T extends FormContainerData>( { data, render }: FormContainerProps<T> ) => {
+const FormContainer = ({
+    alignItemsMain,
+    children,
+    customClassName,
+    sizeForm,
+    spacingMain,
+    styleMain,
+    styleSecond,
+    title,
+    titleStyle,
+}: FormContainerData ) => {
 
     return (
         <Grid2
-            alignItems='center'
+            alignItems={ alignItemsMain }
             container
+            direction='column'
+            spacing={ spacingMain }
             justifyContent='center'
-            spacing={ 2 }
-            sx={{ mt: 2 }}
+            sx={ styleMain }
         >
             <Grid2
-                className={ data.customClassName }
-                size={ data.sizeForm }
-                sx={ data.style }
+                className={ customClassName }
+                size={ sizeForm }
+                sx={ styleSecond }
             >
                 {
-                    ( data.title ) && (
+                    ( title ) && (
                         <Typography
-                            variant={ data.titleVariant }
-                            sx={ data.titleStyle }
+                            sx={ titleStyle }
                         >
-                            { data.title }
+                            { title }
                         </Typography>
                     )
                 }
 
-                { render }
+                { children }
             </Grid2>
         </Grid2>
     )
