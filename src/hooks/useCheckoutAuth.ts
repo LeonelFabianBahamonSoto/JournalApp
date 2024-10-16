@@ -10,21 +10,31 @@ export const useCheckoutAuth = () => {
     const auth = useSelector(( state: RootState ) => state.auth );
     const dispatch = useDispatch<AppDispatch>();
 
-    const [ authState, setAuthState ] = useState<string | object>( 'not-authenticated' );
+    const [ authState, setAuthState ] = useState<string>( 'not-authenticated' );
+
+    const getAuth = async() => {
+        const isUserAuth = getUserAuth();
+
+        console.info( 'AUTH: ', auth );
+        console.info( 'isUserAuth?.uid: ', isUserAuth );
+
+        if( auth.status === 'not-authenticated' && isUserAuth !== false && isUserAuth?.uid ){
+            dispatch( login( isUserAuth ) );
+            setAuthState( 'authenticated' );
+        }
+    };
 
     useEffect(() => {
         const isUserAuth = getUserAuth();
 
-        if( auth.status === 'authenticated' ){
-            setAuthState( auth );
-            return;
-        }
-        else if( isUserAuth !== false && isUserAuth?.uid ){
-            setAuthState( isUserAuth );
+        console.info( 'AUTH: ', auth );
+        console.info( 'isUserAuth?.uid: ', isUserAuth );
+
+        if( auth.status === 'not-authenticated' && isUserAuth !== false && isUserAuth?.uid ){
             dispatch( login( isUserAuth ) );
-            return;
+            setAuthState( 'authenticated' );
         }
-    }, []);
+    }, [auth, dispatch]);
 
     return {
         authState,
