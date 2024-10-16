@@ -1,5 +1,3 @@
-import { getAuth } from "firebase/auth";
-
 interface User {
     displayName: string,
     email: string,
@@ -9,25 +7,23 @@ interface User {
 
 const saveNewAuth = ( user: User ) => {
     const { displayName, email, photoURL, uid } = user;
-    sessionStorage.setItem( 'userAuth', JSON.stringify({ displayName, email, photoURL, uid }));
+    sessionStorage.setItem( 'userAuth', JSON.stringify({
+        displayName: displayName,
+        email: email,
+        photoURL: photoURL,
+        uid: uid,
+    }));
 };
 
 const getUserAuth = () => {
-    try {
-        const auth = getAuth();
+    const user = sessionStorage.getItem( 'userAuth' );
 
-        if( auth.currentUser ){
-            const { displayName, email, photoURL, uid } = auth.currentUser;
-            return { displayName, email, photoURL, uid };
-        }
-        else{
-            sessionStorage.clear();
-            return false;
-        }
-    } catch (error) {
-        return false;
+    if( user ){
+        return user;
     }
-
+    else {
+        return 'not-authenticated';
+    }
 };
 
 export {

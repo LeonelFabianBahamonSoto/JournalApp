@@ -25,8 +25,8 @@ export const startSignIn = ( { email, password }: RegisterData ) => {
 
         if( isAuth && data ){
             const { uid, displayName, email, photoURL } = data;
-            dispatch( login({ uid, displayName, email, photoURL }) );
             saveNewAuth({ uid, displayName, email, photoURL });
+            dispatch( login({ uid, displayName, email, photoURL }) );
             response = { isAuth };
         }
         else {
