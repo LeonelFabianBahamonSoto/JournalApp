@@ -1,4 +1,5 @@
 import { registerUser, signInWithCredentials } from "../../firebase/providers";
+import { saveNewAuth } from "../../helper/localStorage";
 
 import { AppDispatch } from "../store";
 
@@ -25,6 +26,7 @@ export const startSignIn = ( { email, password }: RegisterData ) => {
         if( isAuth && data ){
             const { uid, displayName, email, photoURL } = data;
             dispatch( login({ uid, displayName, email, photoURL }) );
+            saveNewAuth({ uid, displayName, email, photoURL });
             response = { isAuth };
         }
         else {

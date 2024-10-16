@@ -1,22 +1,36 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { FirebaseAuth } from "../firebase/config";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
-import { logout } from "../store/auth/authSlice";
+import { getAuth } from "firebase/auth";
 
-const dispatch = useDispatch<AppDispatch>();
+interface User {
+    displayName: string,
+    email: string,
+    photoURL: string,
+    uid: string,
+};
 
-const authStateChanged = ( user: any ) => {
-    onAuthStateChanged( FirebaseAuth, async( user ) => {
-        if( user ){
-            dispatch( logout( 'Sesion cerrada' ) );
+const saveNewAuth = ( user: User ) => {
+    const { displayName, email, photoURL, uid } = user;
+    sessionStorage.setItem( 'userAuth', JSON.stringify({ displayName, email, photoURL, uid }));
+};
+
+const getUserAuth = () => {
+    try {
+        const auth = getAuth();
+
+        if( auth.currentUser ){
+            const { displayName, email, photoURL, uid } = auth.currentUser;
+            return { displayName, email, photoURL, uid };
         }
         else{
-            dispatch( logout( 'Sesion cerrada' ) );
+            sessionStorage.clear();
+            return false;
         }
-    });
+    } catch (error) {
+        return false;
+    }
+
 };
 
 export {
-    authStateChanged,
+    getUserAuth,
+    saveNewAuth,
 };

@@ -1,17 +1,23 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import Loading from '../components/templates/Loading';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 import { AuthNavigation } from '../pages/auth/routes/AuthNavigation';
 import { JournalNavigation } from '../journal/routes/JournalNavigation';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { useCheckoutAuth } from '../hooks/useCheckoutAuth';
+import Loading from '../components/templates/Loading';
 
 export const AppRouter = () => {
 
     const auth = useSelector(( state: RootState ) => state.auth );
+    const { authState } = useCheckoutAuth();
+
+    useEffect(() => {
+        console.info( '----> useCheckoutAuth: ', authState );
+    }, []);
 
     return (
         <Suspense

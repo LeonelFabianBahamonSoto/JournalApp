@@ -20,13 +20,9 @@ import { Google } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import FormContainer from '../../../components/molecules/FormContainer';
 import Loading from '../../../components/templates/Loading';
+import { getUserAuth } from '../../../helper/localStorage';
 
 export const useStyles = makeStyles(( theme: Theme ) => ({
-        buttonStyle: {
-            height: '3vh',
-            fontSize: '12px',
-            width: '100%',
-        },
         linkContainer: {
             alignItems: 'center',
             display: 'flex',
@@ -121,6 +117,7 @@ const LoginPage = () => {
                         const { isAuth, errorMessage } = await dispatch( startSignIn( values ) );
 
                         if( isAuth ){
+                            getUserAuth();
                             console.info(" --------> Redireccion");
                         }
                         else {
@@ -169,7 +166,6 @@ const LoginPage = () => {
                             sizeGrid={{ xs: 12, sm: 6, md: 4, lg: 3 }}
                         >
                             <Button
-                                className={ classes.buttonStyle }
                                 disabled={ isAuthenticated }
                                 type="submit"
                                 variant='contained'
@@ -177,23 +173,24 @@ const LoginPage = () => {
                                     bgcolor: '#4285f4',
                                     color: 'white',
                                     fontWeight: '600',
+                                    width: '100%',
                                 }}
                             >
                                 Login
                             </Button>
 
                             <Button
-                                className={ classes.buttonStyle }
                                 disabled={ isAuthenticated }
                                 onClick={ onGoogleSignIn }
                                 variant='contained'
                                 sx={{
-                                    bgcolor: '#fbbc05',
-                                    color: '#ea4335',
+                                    bgcolor: '#fbbea4335c05',
+                                    color: 'white',
                                     fontWeight: '600',
+                                    width: '100%',
                                 }}
                             >
-                                <Google sx={{ color: '#ea4335', mr: 1 }} />
+                                <Google sx={{ color: 'white', mr: 1 }} />
                                 Google
                             </Button>
                         </GridFormButtons>
